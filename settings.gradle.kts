@@ -11,4 +11,4 @@ plugins {
 }
 
 rootProject.name = "currency-info-gateway"
-include("xml-api", "json-api", "domain", "rates-collector", "statistics-collector")
+include("xml-api", "json-api", "domain", "rates-collector", "statistics-collector", "service")
