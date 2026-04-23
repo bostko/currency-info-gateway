@@ -1,5 +1,6 @@
 package net.isbg.currency.ratescollector.gateway;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.isbg.currency.ratescollector.dto.LatestRatesResponse;
 import org.slf4j.Logger;
@@ -9,6 +10,11 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.io.IOException;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
 
 @Component
 public class FixerIoGateway {
@@ -34,12 +40,26 @@ public class FixerIoGateway {
         this.mock = mock;
     }
 
-    public LatestRatesResponse getLatest() throws Exception {
+    public LatestRatesResponse getLatest() throws JsonProcessingException {
         if (mock) {
             log.debug("Mock enabled — loading response from mock-latest-response.json");
-            return objectMapper.readValue(
-                    new ClassPathResource("mock-latest-response.json").getInputStream(),
-                    LatestRatesResponse.class);
+            try {
+                var mock = objectMapper.readValue(
+                        new ClassPathResource("mock-latest-response.json").getInputStream(),
+                        LatestRatesResponse.class);
+                var now = Instant.now();
+                LocalDate date = now
+                        .atOffset(ZoneOffset.UTC)
+                        .toLocalDate();
+                return new LatestRatesResponse(mock.success(),
+                        now.toEpochMilli()/1000l,
+                            mock.base(),
+                            date.toString(),
+                            mock.rates(),
+                            mock.error());
+            } catch (IOException e) {
+                log.error("Failed to load mock response", e);
+            }
         }
 
         String url = uriBuilder()
