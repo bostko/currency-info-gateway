@@ -4,6 +4,7 @@ import net.isbg.currency.jsonapi.dto.CurrencyRateResponse;
 import net.isbg.currency.jsonapi.dto.CurrentRequest;
 import net.isbg.currency.jsonapi.dto.HistoryRequest;
 import net.isbg.currency.jsonapi.exception.DuplicateRequestException;
+import net.isbg.currency.jsonapi.service.AuditService;
 import net.isbg.currency.jsonapi.service.CurrencyService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,18 +18,22 @@ import java.util.Map;
 public class CurrencyController {
 
     private final CurrencyService currencyService;
+    private final AuditService auditService;
 
-    public CurrencyController(CurrencyService currencyService) {
+    public CurrencyController(CurrencyService currencyService, AuditService auditService) {
         this.currencyService = currencyService;
+        this.auditService = auditService;
     }
 
     @PostMapping("/current")
     public CurrencyRateResponse current(@RequestBody CurrentRequest request) {
+        auditService.audit(request);
         return currencyService.getCurrent(request);
     }
 
     @PostMapping("/history")
     public List<CurrencyRateResponse> history(@RequestBody HistoryRequest request) {
+        auditService.audit(request);
         return currencyService.getHistory(request);
     }
 

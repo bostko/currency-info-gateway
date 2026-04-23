@@ -2,10 +2,12 @@ package net.isbg.currency.jsonapi;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.time.Instant;
+import org.springframework.boot.persistence.autoconfigure.EntityScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication(scanBasePackages = "net.isbg.currency.jsonapi")
+@EntityScan("net.isbg.currency.domain.entity")
+@EnableJpaRepositories("net.isbg.currency.domain.repository")
 public class JsonApiApplication {
 
     public static void main(String[] args) {
