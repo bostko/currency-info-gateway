@@ -26,6 +26,13 @@ public class Rates {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    public Rates(long timestamp, String base, LocalDate date, Map<String, Double> rates) {
+        this.timestamp = timestamp;
+        this.base = base;
+        this.date = date;
+        this.rates = rates;
+    }
+
     private long timestamp;
 
     private String base;
