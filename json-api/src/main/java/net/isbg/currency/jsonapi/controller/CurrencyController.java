@@ -1,8 +1,8 @@
 package net.isbg.currency.jsonapi.controller;
 
-import net.isbg.currency.jsonapi.dto.CurrencyRateResponse;
-import net.isbg.currency.jsonapi.dto.CurrentRateResponse;
+import net.isbg.currency.domain.entity.Rates;
 import net.isbg.currency.jsonapi.dto.CurrentRequest;
+import net.isbg.currency.jsonapi.dto.RateResponse;
 import net.isbg.currency.jsonapi.dto.HistoryRequest;
 import net.isbg.currency.jsonapi.exception.DuplicateRequestException;
 import net.isbg.currency.jsonapi.service.AuditService;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/json_api")
@@ -27,20 +28,30 @@ public class CurrencyController {
     }
 
     @PostMapping("/current")
-    public CurrentRateResponse current(@RequestBody CurrentRequest request) {
+    public RateResponse current(@RequestBody CurrentRequest request) {
         auditService.audit(request);
-        return currencyService.getCurrent(request);
+        return toRateResponse(currencyService.getCurrent(request), request.currency());
     }
 
     @PostMapping("/history")
-    public List<CurrencyRateResponse> history(@RequestBody HistoryRequest request) {
+    public List<RateResponse> history(@RequestBody HistoryRequest request) {
         auditService.audit(request);
-        return currencyService.getHistory(request);
+        return currencyService.getHistory(request).stream().map(r -> toRateResponse(r, request.currency())).collect(Collectors.toList());
     }
 
     @ExceptionHandler(DuplicateRequestException.class)
     public ResponseEntity<Map<String, String>> handleDuplicate(DuplicateRequestException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(Map.of("error", ex.getMessage()));
+    }
+
+    private RateResponse toRateResponse(Rates rates, String currency) {
+        return new RateResponse(
+            currency,
+            rates.getRates().get(currency),
+            rates.getBase(),
+            rates.getDate(),
+            rates.getTimestamp() * 1000
+        );
     }
 }

@@ -2,13 +2,12 @@ package net.isbg.currency.jsonapi.service;
 
 import net.isbg.currency.domain.entity.Rates;
 import net.isbg.currency.domain.repository.RatesRepository;
-import net.isbg.currency.jsonapi.dto.CurrencyRateResponse;
-import net.isbg.currency.jsonapi.dto.CurrentRateResponse;
 import net.isbg.currency.jsonapi.dto.CurrentRequest;
 import net.isbg.currency.jsonapi.dto.HistoryRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -21,24 +20,21 @@ public class CurrencyService {
         this.ratesRepository = ratesRepository;
     }
 
-    // TODO return entity and move dto mapping
-    public CurrentRateResponse getCurrent(CurrentRequest request) {
+    public Rates getCurrent(CurrentRequest request) {
         Rates latest = ratesRepository.findTopByOrderByTimestampDesc()
                 .orElseThrow(() -> new NoSuchElementException("No rates available"));
         Double rate = latest.getRates().get(request.currency());
         if (rate == null) {
             throw new NoSuchElementException("Currency not found: " + request.currency());
         }
-        return new CurrentRateResponse(
-                request.currency(),
-                rate,
-                latest.getBase(),
-                latest.getDate(),
-                Instant.ofEpochSecond(latest.getTimestamp())
-        );
+        return latest;
     }
 
-    public List<CurrencyRateResponse> getHistory(HistoryRequest request) {
-        return List.of();
+    public List<Rates> getHistory(HistoryRequest request) {
+        long fromSecs = Instant.now().minus(request.period(), ChronoUnit.HOURS).toEpochMilli();
+        return ratesRepository.findByTimestampGreaterThanEqualOrderByTimestampAsc(fromSecs)
+                .stream()
+                .filter(r -> r.getRates().containsKey(request.currency()))
+                .toList();
     }
 }

@@ -25,7 +25,7 @@ public class RequestAudit {
     private String requestId;
 
     @Column(nullable = false)
-    private Instant timestamp;
+    private long timestamp;
 
     @Column(nullable = false)
     private long clientId;
@@ -44,7 +44,7 @@ public class RequestAudit {
     /** Non-null only for {@link CommandType#HISTORY} requests. */
     private Integer period;
 
-    public RequestAudit(String requestId, Instant timestamp, long clientId, String currency,
+    public RequestAudit(String requestId, long timestamp, long clientId, String currency,
                         CommandType command, ServiceType serviceType, Integer period) {
         this.requestId = requestId;
         this.timestamp = timestamp;

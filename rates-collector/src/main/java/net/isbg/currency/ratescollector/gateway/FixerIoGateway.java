@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 public class FixerIoGateway {
@@ -44,19 +46,7 @@ public class FixerIoGateway {
         if (mock) {
             log.debug("Mock enabled — loading response from mock-latest-response.json");
             try {
-                var mock = objectMapper.readValue(
-                        new ClassPathResource("mock-latest-response.json").getInputStream(),
-                        LatestRatesResponse.class);
-                var now = Instant.now();
-                LocalDate date = now
-                        .atOffset(ZoneOffset.UTC)
-                        .toLocalDate();
-                return new LatestRatesResponse(mock.success(),
-                        now.toEpochMilli()/1000l,
-                            mock.base(),
-                            date.toString(),
-                            mock.rates(),
-                            mock.error());
+                return createMockedRatesResponse();
             } catch (IOException e) {
                 log.error("Failed to load mock response", e);
             }
@@ -74,5 +64,23 @@ public class FixerIoGateway {
 
     private UriComponentsBuilder uriBuilder() {
         return baseUri.cloneBuilder();
+    }
+
+    private LatestRatesResponse createMockedRatesResponse() throws IOException {
+        var mock = objectMapper.readValue(
+                new ClassPathResource("mock-latest-response.json").getInputStream(),
+                LatestRatesResponse.class);
+        var now = Instant.now();
+        LocalDate date = now
+                .atOffset(ZoneOffset.UTC)
+                .toLocalDate();
+        return new LatestRatesResponse(mock.success(),
+                now.toEpochMilli(),
+                mock.base(),
+                date.toString(),
+                mock.rates().entrySet().stream().collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        e -> Math.round((e.getValue() + Math.random() * (0.0001 - 0.1)) * 1000000f )/1000000d)),
+                mock.error());
     }
 }

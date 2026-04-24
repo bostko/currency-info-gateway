@@ -37,7 +37,7 @@ public class AuditService {
         checkDuplicate(request.requestId());
         auditRepository.save(new RequestAudit(
                 request.requestId(),
-                Instant.ofEpochMilli(request.timestamp()),
+                request.timestamp(),
                 Long.parseLong(request.client()),
                 request.currency(),
                 CommandType.HISTORY,
