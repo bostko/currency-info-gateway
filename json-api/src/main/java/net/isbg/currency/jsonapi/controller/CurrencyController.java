@@ -1,6 +1,7 @@
 package net.isbg.currency.jsonapi.controller;
 
 import net.isbg.currency.jsonapi.dto.CurrencyRateResponse;
+import net.isbg.currency.jsonapi.dto.CurrentRateResponse;
 import net.isbg.currency.jsonapi.dto.CurrentRequest;
 import net.isbg.currency.jsonapi.dto.HistoryRequest;
 import net.isbg.currency.jsonapi.exception.DuplicateRequestException;
@@ -26,7 +27,7 @@ public class CurrencyController {
     }
 
     @PostMapping("/current")
-    public CurrencyRateResponse current(@RequestBody CurrentRequest request) {
+    public CurrentRateResponse current(@RequestBody CurrentRequest request) {
         auditService.audit(request);
         return currencyService.getCurrent(request);
     }
