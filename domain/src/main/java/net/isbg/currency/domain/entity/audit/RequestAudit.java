@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
 
@@ -28,10 +29,7 @@ public class RequestAudit {
     private long timestamp;
 
     @Column(nullable = false)
-    private long clientId;
-
-    @Column(nullable = false)
-    private String currency;
+    private String clientId;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -41,17 +39,16 @@ public class RequestAudit {
     @Column(nullable = false)
     private ServiceType serviceType;
 
-    /** Non-null only for {@link CommandType#HISTORY} requests. */
-    private Integer period;
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
+    private Instant createdAt;
 
-    public RequestAudit(String requestId, long timestamp, long clientId, String currency,
-                        CommandType command, ServiceType serviceType, Integer period) {
+    public  RequestAudit(String requestId, long timestamp, String clientId,
+                        CommandType command, ServiceType serviceType) {
         this.requestId = requestId;
         this.timestamp = timestamp;
         this.clientId = clientId;
-        this.currency = currency;
         this.command = command;
         this.serviceType = serviceType;
-        this.period = period;
     }
 }

@@ -9,8 +9,6 @@ import net.isbg.currency.jsonapi.dto.HistoryRequest;
 import net.isbg.currency.jsonapi.exception.DuplicateRequestException;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
-
 @Service
 public class AuditService {
 
@@ -25,11 +23,9 @@ public class AuditService {
         auditRepository.save(new RequestAudit(
                 request.requestId(),
                 request.timestamp(),
-                Long.parseLong(request.client()),
-                request.currency(),
+                request.client(),
                 CommandType.CURRENT,
-                ServiceType.EXT_SERVICE_1,
-                null
+                ServiceType.EXT_SERVICE_1
         ));
     }
 
@@ -38,11 +34,9 @@ public class AuditService {
         auditRepository.save(new RequestAudit(
                 request.requestId(),
                 request.timestamp(),
-                Long.parseLong(request.client()),
-                request.currency(),
+                request.client(),
                 CommandType.HISTORY,
-                ServiceType.EXT_SERVICE_1,
-                request.period()
+                ServiceType.EXT_SERVICE_1
         ));
     }
 
