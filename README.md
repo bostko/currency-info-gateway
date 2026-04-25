@@ -58,16 +58,16 @@ curl -s -H 'Content-Type: application/xml' --data '<command id="'$(uuidgen)'"><g
 Must return something like this:
 
 ```xml
-<?xml version="1.0"?>
-<command id="b52f7419-20b1-4d4b-846b-08895e82ac3f" consumer="13617162">
-  <rate>
-    <currency>GBP</currency>
-    <date>2026-04-25</date>
-    <timestamp>1777122595319000</timestamp>
-    <conversions>
-      <conversion currency="FJD" rate="2.943692183163737"/>
-      <conversion currency="MXN" rate="23.508527983348753"/>
-      <conversion currency="STD" rate="28114.704305041625"/>
+<command id="f7c9a53c-2432-4002-bbd8-523c9fb45a84" consumer="13617162">
+   <rate>
+      <currency>USD</currency>
+      <date>2026-04-25</date>
+      <timestamp>1777127673546</timestamp>
+      <conversions>
+         <conversion currency="FJD" rate="2.329382784103633"/>
+         <conversion currency="MXN" rate="18.42529391125226"/>
+         <conversion currency="STD" rate="22043.807725330447"/>
+         <conversion currency="LVL" rate="0.5716189666255352"/>
     </conversions>
   </rate>
 </command>
@@ -81,25 +81,28 @@ Must return something like this:
 
 ```xml
 <?xml version="1.0"?>
-<command id="bfa4b526-7093-4cb6-8cbd-db68a8990b87" consumer="13617162">
+<command id="f7c9a53c-2432-4002-bbd8-523c9fb45a84" consumer="13617162">
    <rate>
       <currency>USD</currency>
       <date>2026-04-25</date>
-      <timestamp>1777113037372000</timestamp>
+      <timestamp>1777127673546</timestamp>
       <conversions>
-         <conversion currency="FJD" rate="2.1941999869163578"/>
-         <conversion currency="MXN" rate="17.48049590447564"/>
-         <conversion currency="STD" rate="20928.339203757074"/>
+         <conversion currency="FJD" rate="2.329382784103633"/>
+         <conversion currency="MXN" rate="18.42529391125226"/>
+         <conversion currency="STD" rate="22043.807725330447"/>
+         <conversion currency="LVL" rate="0.5716189666255352"/>
+         <conversion currency="SCR" rate="14.922438436619705"/>
       </conversions>
    </rate>
    <rate>
       <currency>USD</currency>
       <date>2026-04-25</date>
-      <timestamp>1777113037372000</timestamp>
+      <timestamp>1777127678473</timestamp>
       <conversions>
-         <conversion currency="FJD" rate="2.1941999869163578"/>
-         <conversion currency="MXN" rate="17.48049590447564"/>
-         <conversion currency="STD" rate="20928.339203757074"/>
+         <conversion currency="FJD" rate="2.139873099662708"/>
+         <conversion currency="MXN" rate="17.527956949392436"/>
+         <conversion currency="STD" rate="20957.768534026134"/>
+         <conversion currency="LVL" rate="0.5846388701887645"/>
       </conversions>
    </rate>
 </command>
