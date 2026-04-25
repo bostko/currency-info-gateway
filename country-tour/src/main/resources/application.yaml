@@ -1,0 +1,20 @@
+server:
+  port: 8082
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/currency_gateway
+    driver-class-name: org.postgresql.Driver
+    username: currency_gateway
+    password: currency_gateway_pass
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+  cache:
+    type: caffeine
+    caffeine:
+      spec: maximumSize=500,expireAfterWrite=1h
+
+country-tour:
+  rest-countries-base-url: https://restcountries.com/v3.1

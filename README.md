@@ -25,7 +25,7 @@ curl -s -H 'Content-Type: application/json' --data '{"requestId": "'$(uuidgen)'"
 ```
 Must return something like this:
 
-    {"currency":"EUR","rate":0.933179,"base":"EUR","date":"2026-04-24","timestamp":1777022095090000}
+    {"currency":"EUR","date":"2026-04-25","timestamp":1777121777084000,"rates":{"FJD":2.500586,"MXN":20.275453,"STD":24313.629281}}
 
 #### Historical rates
 
@@ -34,10 +34,18 @@ curl -s -H 'Content-Type: application/json' --data '{"requestId": "'$(uuidgen)'"
 ```
 Must return something like this:
 ```json
-[{"currency":"EUR","rate":0.963789,"base":"EUR","date":"2026-04-24","timestamp":1777019933020000},
-  {"currency":"EUR","rate":0.979665,"base":"EUR","date":"2026-04-24","timestamp":1777019937988000},
-  {"currency":"EUR","rate":0.907751,"base":"EUR","date":"2026-04-24","timestamp":1777019942988000},
-  {"currency":"EUR","rate":0.974143,"base":"EUR","date":"2026-04-24","timestamp":1777019947988000}]
+[
+  {
+    "currency": "EUR",
+    "date": "2026-04-25",
+    "timestamp": 1777113037372000,
+    "rates": {
+      "FJD": 2.549125,
+      "MXN": 20.308071,
+      "STD": 24313.62364
+    }
+  }
+]
 ```
 
 ### XML API
@@ -49,16 +57,21 @@ curl -s -H 'Content-Type: application/xml' --data '<command id="'$(uuidgen)'"><g
 ```
 Must return something like this:
 
-    <?xml version="1.0"?>
-    <command id="b77e6301-2b0c-44b4-a43e-fe8465a8b84d" consumer="13617162">
-      <rate>
-        <currency>GBP</currency>
-        <rate>0.800892</rate>
-        <base>EUR</base>
-        <date>2026-04-24</date>
-        <timestamp>1777021687987000</timestamp>
-      </rate>
-    </command>
+```xml
+<?xml version="1.0"?>
+<command id="b52f7419-20b1-4d4b-846b-08895e82ac3f" consumer="13617162">
+  <rate>
+    <currency>GBP</currency>
+    <date>2026-04-25</date>
+    <timestamp>1777122595319000</timestamp>
+    <conversions>
+      <conversion currency="FJD" rate="2.943692183163737"/>
+      <conversion currency="MXN" rate="23.508527983348753"/>
+      <conversion currency="STD" rate="28114.704305041625"/>
+    </conversions>
+  </rate>
+</command>
+```
 
 #### Historical rates
 ```bash
@@ -66,20 +79,29 @@ curl -s -H 'Content-Type: application/xml' --data '<command id="'$(uuidgen)'"><h
 ```
 Must return something like this:
 
-    <?xml version="1.0"?>
-    <command id="d78da96a-dea0-4b6e-8dd2-beb625809e1f" consumer="13617162">
-      <rate>
-        <currency>USD</currency>
-        <rate>1.171487</rate>
-        <base>EUR</base>
-        <date>2026-04-24</date>
-        <timestamp>1777019933020000</timestamp>
-      </rate>
-      <rate>
-        <currency>USD</currency>
-        <rate>1.120797</rate>
-        <base>EUR</base>
-        <date>2026-04-24</date>
-        <timestamp>1777019937988000</timestamp>
-      </rate>
-      </command>
+```xml
+<?xml version="1.0"?>
+<command id="bfa4b526-7093-4cb6-8cbd-db68a8990b87" consumer="13617162">
+   <rate>
+      <currency>USD</currency>
+      <date>2026-04-25</date>
+      <timestamp>1777113037372000</timestamp>
+      <conversions>
+         <conversion currency="FJD" rate="2.1941999869163578"/>
+         <conversion currency="MXN" rate="17.48049590447564"/>
+         <conversion currency="STD" rate="20928.339203757074"/>
+      </conversions>
+   </rate>
+   <rate>
+      <currency>USD</currency>
+      <date>2026-04-25</date>
+      <timestamp>1777113037372000</timestamp>
+      <conversions>
+         <conversion currency="FJD" rate="2.1941999869163578"/>
+         <conversion currency="MXN" rate="17.48049590447564"/>
+         <conversion currency="STD" rate="20928.339203757074"/>
+      </conversions>
+   </rate>
+</command>
+
+```
