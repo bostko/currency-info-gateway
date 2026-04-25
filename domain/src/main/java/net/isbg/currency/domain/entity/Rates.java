@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Entity
 @EqualsAndHashCode(of = "id")
@@ -44,4 +45,13 @@ public class Rates {
     @MapKeyColumn(name = "currency")
     @Column(name = "value")
     private Map<String, Double> rates;
+
+    public Map<String, Double> crossRatesFor(String currency) {
+        if (base.equals(currency)) {
+            return rates;
+        }
+        double baseRate = rates.get(currency);
+        return rates.entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue() / baseRate));
+    }
 }

@@ -31,7 +31,7 @@ public class CurrencyService {
     }
 
     public List<Rates> getHistory(HistoryRequest request) {
-        long fromSecs = Instant.now().minus(request.period(), ChronoUnit.HOURS).toEpochMilli();
+        long fromSecs = Instant.now().minus(request.period(), ChronoUnit.HOURS).getEpochSecond();
         return ratesRepository.findByTimestampGreaterThanEqualOrderByTimestampAsc(fromSecs)
                 .stream()
                 .filter(r -> r.getRates().containsKey(request.currency()))

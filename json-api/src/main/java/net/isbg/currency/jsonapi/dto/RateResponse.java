@@ -1,11 +1,12 @@
 package net.isbg.currency.jsonapi.dto;
 
 import java.time.LocalDate;
+import java.util.Map;
 
 public record RateResponse(
         String currency,
-        double rate,
         String base,
         LocalDate date,
-        long timestamp
+        long timestamp,
+        Map<String, Double> rates
 ) {}

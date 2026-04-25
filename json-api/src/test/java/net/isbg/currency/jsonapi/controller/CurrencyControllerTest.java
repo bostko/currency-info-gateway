@@ -42,7 +42,7 @@ class CurrencyControllerTest {
     private static final LocalDate RATE_DATE = LocalDate.of(2026, 4, 21);
 
     private static Rates gbpRates(double gbpRate) {
-        return new Rates(RATE_TIMESTAMP_SECS, "EUR", RATE_DATE, Map.of("GBP", gbpRate));
+        return new Rates(RATE_TIMESTAMP_SECS, "EUR", RATE_DATE, Map.of("GBP", gbpRate, "USD", 1.08));
     }
 
     // --- POST /json_api/current ---
@@ -59,10 +59,11 @@ class CurrencyControllerTest {
                                 """.formatted(requestId)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.currency").value("GBP"))
-                .andExpect(jsonPath("$.rate").value(0.856))
                 .andExpect(jsonPath("$.base").value("EUR"))
                 .andExpect(jsonPath("$.date").value(RATE_DATE.toString()))
-                .andExpect(jsonPath("$.timestamp").value(RATE_TIMESTAMP_SECS * 1000));
+                .andExpect(jsonPath("$.timestamp").value(RATE_TIMESTAMP_SECS * 1000))
+                .andExpect(jsonPath("$.rates.GBP").value(1.0))
+                .andExpect(jsonPath("$.rates.USD").exists());
     }
 
     @Test

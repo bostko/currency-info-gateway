@@ -3,6 +3,7 @@ package net.isbg.currency.xmlapi.controller;
 import net.isbg.currency.domain.entity.Rates;
 import net.isbg.currency.xmlapi.dto.CommandRequest;
 import net.isbg.currency.xmlapi.dto.CommandResponse;
+import net.isbg.currency.xmlapi.dto.Conversion;
 import net.isbg.currency.xmlapi.dto.RateResponse;
 import net.isbg.currency.xmlapi.service.AuditService;
 import net.isbg.currency.xmlapi.service.CurrencyService;
@@ -54,12 +55,15 @@ public class CommandController {
     }
 
     private RateResponse toRateResponse(Rates rates, String currency) {
+        List<Conversion> conversions = rates.crossRatesFor(currency).entrySet().stream()
+                .map(e -> new Conversion(e.getKey(), e.getValue()))
+                .toList();
         return new RateResponse(
                 currency,
-                rates.getRates().get(currency),
                 rates.getBase(),
                 rates.getDate().toString(),
-                rates.getTimestamp() * 1000
+                rates.getTimestamp() * 1000,
+                conversions
         );
     }
 }

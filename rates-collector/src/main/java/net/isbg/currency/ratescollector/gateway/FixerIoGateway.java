@@ -80,7 +80,9 @@ public class FixerIoGateway {
                 date.toString(),
                 mock.rates().entrySet().stream().collect(Collectors.toMap(
                         Map.Entry::getKey,
-                        e -> Math.round((e.getValue() + Math.random() * (0.0001 - 0.1)) * 1000000f )/1000000d)),
+                        e -> mock.base().equals(e.getKey())
+                                ? e.getValue()
+                                : Math.round((e.getValue() + Math.random() * (0.0001 - 0.1)) * 1000000f )/1000000d)),
                 mock.error());
     }
 }
