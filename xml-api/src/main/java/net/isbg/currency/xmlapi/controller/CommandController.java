@@ -60,9 +60,8 @@ public class CommandController {
                 .toList();
         return new RateResponse(
                 currency,
-                rates.getBase(),
                 rates.getDate().toString(),
-                rates.getTimestamp() * 1000,
+                rates.getTimestamp(),
                 conversions
         );
     }

@@ -1,7 +1,11 @@
 package net.isbg.currency.xmlapi.dto;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
+@Getter
+@EqualsAndHashCode
 public class GetCommand {
 
     @JacksonXmlProperty(isAttribute = true, localName = "consumer")
@@ -9,7 +13,4 @@ public class GetCommand {
 
     @JacksonXmlProperty(localName = "currency")
     private String currency;
-
-    public String getConsumer() { return consumer; }
-    public String getCurrency() { return currency; }
 }

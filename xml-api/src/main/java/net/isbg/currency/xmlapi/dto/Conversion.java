@@ -1,7 +1,11 @@
 package net.isbg.currency.xmlapi.dto;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
+@Getter
+@EqualsAndHashCode
 public class Conversion {
 
     @JacksonXmlProperty(isAttribute = true, localName = "currency")
@@ -14,7 +18,4 @@ public class Conversion {
         this.currency = currency;
         this.rate = rate;
     }
-
-    public String getCurrency() { return currency; }
-    public double getRate() { return rate; }
 }

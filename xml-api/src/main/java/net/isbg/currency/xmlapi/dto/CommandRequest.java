@@ -2,8 +2,12 @@ package net.isbg.currency.xmlapi.dto;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
 @JacksonXmlRootElement(localName = "command")
+@EqualsAndHashCode
+@Getter
 public class CommandRequest {
 
     @JacksonXmlProperty(isAttribute = true, localName = "id")
@@ -14,8 +18,4 @@ public class CommandRequest {
 
     @JacksonXmlProperty(localName = "history")
     private HistoryCommand history;
-
-    public String getRequestId() { return requestId; }
-    public GetCommand getGet() { return get; }
-    public HistoryCommand getHistory() { return history; }
 }

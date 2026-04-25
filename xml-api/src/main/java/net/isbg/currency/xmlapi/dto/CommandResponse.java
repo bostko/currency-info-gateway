@@ -3,10 +3,12 @@ package net.isbg.currency.xmlapi.dto;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import lombok.Getter;
 
 import java.util.List;
 
 @JacksonXmlRootElement(localName = "command")
+@Getter
 public class CommandResponse {
 
     @JacksonXmlProperty(isAttribute = true, localName = "id")
@@ -24,8 +26,4 @@ public class CommandResponse {
         this.consumer = consumer;
         this.rates = rates;
     }
-
-    public String getRequestId() { return requestId; }
-    public String getConsumer() { return consumer; }
-    public List<RateResponse> getRates() { return rates; }
 }

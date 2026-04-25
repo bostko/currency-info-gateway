@@ -59,7 +59,6 @@ class CurrencyControllerTest {
                                 """.formatted(requestId)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.currency").value("GBP"))
-                .andExpect(jsonPath("$.base").value("EUR"))
                 .andExpect(jsonPath("$.date").value(RATE_DATE.toString()))
                 .andExpect(jsonPath("$.timestamp").value(RATE_TIMESTAMP_SECS * 1000))
                 .andExpect(jsonPath("$.rates.GBP").value(1.0))
@@ -96,7 +95,7 @@ class CurrencyControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(2))
                 .andExpect(jsonPath("$[0].currency").value("GBP"))
-                .andExpect(jsonPath("$[0].base").value("EUR"))
+                .andExpect(jsonPath("$[0].rates.GBP").exists())
                 .andExpect(jsonPath("$[1].currency").value("GBP"));
     }
 

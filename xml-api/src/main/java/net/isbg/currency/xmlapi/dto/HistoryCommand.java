@@ -1,7 +1,9 @@
 package net.isbg.currency.xmlapi.dto;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import lombok.Getter;
 
+@Getter
 public class HistoryCommand {
 
     @JacksonXmlProperty(isAttribute = true, localName = "consumer")
@@ -12,8 +14,4 @@ public class HistoryCommand {
 
     @JacksonXmlProperty(isAttribute = true, localName = "period")
     private int period;
-
-    public String getConsumer() { return consumer; }
-    public String getCurrency() { return currency; }
-    public int getPeriod() { return period; }
 }

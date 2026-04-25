@@ -48,7 +48,6 @@ public class CurrencyController {
     private RateResponse toRateResponse(Rates rates, String currency) {
         return new RateResponse(
                 currency,
-                rates.getBase(),
                 rates.getDate(),
                 rates.getTimestamp() * 1000,
                 rates.crossRatesFor(currency)

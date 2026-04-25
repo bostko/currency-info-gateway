@@ -1,6 +1,5 @@
 plugins {
     java
-    id("org.springframework.boot")
     id("io.freefair.lombok") version "9.2.0"
 }
 
