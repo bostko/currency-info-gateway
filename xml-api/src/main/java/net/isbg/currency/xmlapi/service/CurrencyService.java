@@ -2,6 +2,7 @@ package net.isbg.currency.xmlapi.service;
 
 import net.isbg.currency.domain.entity.Rates;
 import net.isbg.currency.domain.repository.RatesRepository;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -26,9 +27,9 @@ public class CurrencyService {
         return latest;
     }
 
-    public List<Rates> getHistory(String currency, int periodHours) {
+    public List<Rates> getHistory(String currency, int periodHours, Pageable pageable) {
         long fromSecs = Instant.now().minusSeconds((long) periodHours * 3600).getEpochSecond();
-        return ratesRepository.findByTimestampGreaterThanEqualOrderByTimestampAsc(fromSecs)
+        return ratesRepository.findByTimestampGreaterThanEqualOrderByTimestampAsc(fromSecs, pageable)
                 .stream()
                 .filter(r -> r.getRates().containsKey(currency))
                 .toList();

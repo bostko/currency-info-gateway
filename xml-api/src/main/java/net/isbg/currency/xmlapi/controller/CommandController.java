@@ -7,6 +7,7 @@ import net.isbg.currency.xmlapi.dto.Conversion;
 import net.isbg.currency.xmlapi.dto.RateResponse;
 import net.isbg.currency.xmlapi.service.AuditService;
 import net.isbg.currency.xmlapi.service.CurrencyService;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,7 +31,7 @@ public class CommandController {
     @PostMapping(value = "/command",
             consumes = MediaType.APPLICATION_XML_VALUE,
             produces = MediaType.APPLICATION_XML_VALUE)
-    public CommandResponse command(@RequestBody CommandRequest request) {
+    public CommandResponse command(@RequestBody CommandRequest request, Pageable pageable) {
         if (request.getGet() != null) {
             auditService.auditCurrent(request);
             Rates rates = currencyService.getCurrent(request.getGet().getCurrency());
@@ -42,7 +43,7 @@ public class CommandController {
         } else {
             auditService.auditHistory(request);
             List<RateResponse> rateResponses = currencyService
-                    .getHistory(request.getHistory().getCurrency(), request.getHistory().getPeriod())
+                    .getHistory(request.getHistory().getCurrency(), request.getHistory().getPeriod(), pageable)
                     .stream()
                     .map(r -> toRateResponse(r, request.getHistory().getCurrency()))
                     .toList();
