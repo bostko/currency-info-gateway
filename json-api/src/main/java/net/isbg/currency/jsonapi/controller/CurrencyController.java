@@ -2,11 +2,12 @@ package net.isbg.currency.jsonapi.controller;
 
 import net.isbg.currency.domain.entity.Rates;
 import net.isbg.currency.jsonapi.dto.CurrentRequest;
-import net.isbg.currency.jsonapi.dto.RateResponse;
 import net.isbg.currency.jsonapi.dto.HistoryRequest;
+import net.isbg.currency.jsonapi.dto.RateResponse;
 import net.isbg.currency.jsonapi.exception.DuplicateRequestException;
 import net.isbg.currency.jsonapi.service.AuditService;
 import net.isbg.currency.jsonapi.service.CurrencyService;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,9 +35,9 @@ public class CurrencyController {
     }
 
     @PostMapping("/history")
-    public List<RateResponse> history(@RequestBody HistoryRequest request) {
+    public List<RateResponse> history(@RequestBody HistoryRequest request, Pageable pageable) {
         auditService.audit(request);
-        return currencyService.getHistory(request).stream().map(r -> toRateResponse(r, request.currency())).collect(Collectors.toList());
+        return currencyService.getHistory(request, pageable).stream().map(r -> toRateResponse(r, request.currency())).collect(Collectors.toList());
     }
 
     @ExceptionHandler(DuplicateRequestException.class)
