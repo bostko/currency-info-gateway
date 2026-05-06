@@ -4,3 +4,13 @@ application-dev.yaml
 
 .gradle
 build
+
+# Frontend build artifacts
+country-tour/src/main/resources/static/
+country-tour/frontend/node_modules/
+
+# Google OAuth credentials
+*.apps.googleusercontent.com.json
+application-dev.yaml
+
+.env

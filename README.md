@@ -8,7 +8,7 @@
 
 2. Start json-api service
      
-       ./gradlew :rates-api:bootRun
+       ./gradlew :json-api:bootRun
 
 3. Start xml-api service
 
